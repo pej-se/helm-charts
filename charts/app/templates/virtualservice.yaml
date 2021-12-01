@@ -1,0 +1,23 @@
+{{- if .Values.global.istio.gateway.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  name: {{ include "app.name" . }}
+spec:
+  hosts:
+  - {{ .Values.global.istio.gateway.host }}
+  gateways:
+  - {{ .Values.global.istio.gateway.name }}
+  http:
+  - route:
+    - destination:
+        host: {{ include "app.name" . }}
+        port:
+          number: {{ .Values.global.service.port }}
+    retries:
+      attempts: 2
+      perTryTimeout: 3s
+      retryOn: 5xx
+{{- end }}

@@ -1,0 +1,14 @@
+{{- if .Values.global.istio.gateway.enabled -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.global.istio.gateway.credentialName }}
+  namespace: istio-system
+spec:
+  dnsNames:
+    - {{ .Values.global.istio.gateway.host }}
+  issuerRef:
+    kind: ClusterIssuer
+    name: {{ .Values.global.istio.gateway.clusterIssuer }}
+  secretName: {{ .Values.global.istio.gateway.credentialName }}
+{{- end }}

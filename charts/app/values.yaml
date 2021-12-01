@@ -1,0 +1,68 @@
+global:
+  nameOverride: ""
+  fullnameOverride: ""
+
+  replicaCount: 2
+
+  image:
+    name: changeme
+    tag: changeme
+    pullPolicy: Always
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  env:
+    JAVA_TOOL_OPTIONS: -XX:+PrintCommandLineFlags -XX:InitialRAMPercentage=80 -XX:MaxRAMPercentage=80
+
+  secrets: {}
+
+  imagePullSecrets:
+    - name: image-pull-secrets
+
+  serviceAccount:
+    name: ""
+
+  podSecurityContext:
+    runAsUser: 10001
+    runAsGroup: 30001
+    fsGroup: 20001
+
+  podAnnotations:
+    sidecar.istio.io/rewriteAppHTTPProbers: "false"
+
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  healthProbe:
+    port: 8081
+    initialDelaySeconds: 15
+    liveness: /actuator/health/liveness
+    readiness: /actuator/health/readiness
+
+  istio:
+    gateway:
+      enabled: false
+      name: changeme-public-gateway
+      host: changeme.dev.pej.se
+      credentialName: changeme-cert
+      clusterIssuer: letsencrypt-prod
+
+  prometheus:
+    enabled: true
+    port: 8081
+    path: /actuator/prometheus

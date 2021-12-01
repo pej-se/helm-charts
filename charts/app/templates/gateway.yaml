@@ -1,0 +1,23 @@
+{{- if .Values.global.istio.gateway.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  name: {{ .Values.global.istio.gateway.name }}
+spec:
+  selector:
+    istio: "ingressgateway"
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: {{ .Values.global.istio.gateway.credentialName }}
+        minProtocolVersion: TLSV1_2
+        maxProtocolVersion: TLSV1_3
+      hosts:
+        - {{ .Values.global.istio.gateway.host }}
+{{- end }}

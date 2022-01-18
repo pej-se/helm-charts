@@ -66,3 +66,5 @@ global:
     enabled: true
     port: 8081
     path: /actuator/prometheus
+
+  extraContainers: {}

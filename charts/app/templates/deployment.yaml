@@ -70,6 +70,18 @@ spec:
               port: {{ .Values.global.healthProbe.port }}
           resources:
             {{- toYaml .Values.global.resources | nindent 12 }}
+        {{- if .Values.global.cloudSqlProxy.enabled }}
+        - name: cloud-sql-proxy
+          image: "gcr.io/cloudsql-docker/gce-proxy:{{ .Values.global.cloudSqlProxy.tag }}"
+          command:
+            - "/cloud_sql_proxy"
+            - "-ip_address_types=PRIVATE"
+            - "-instances={{ .Values.global.cloudSqlProxy.instances }}"
+          securityContext:
+            runAsNonRoot: true
+          resources:
+            {{- toYaml .Values.global.cloudSqlProxy.resources | nindent 12 }}
+        {{- end }}
         {{- with .Values.global.extraContainers }}
           {{- toYaml . | nindent 8 }}
         {{- end }}

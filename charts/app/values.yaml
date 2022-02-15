@@ -46,7 +46,16 @@ global:
 
   service:
     type: ClusterIP
-    port: 8080
+    ports:
+      - port: 8080
+        name: http
+        # routing is only used when gateway enabled
+        routing:
+          match: []
+          retries:
+            attempts: 3
+            perTryTimeout: 2s
+            retryOn: 5xx
 
   healthProbe:
     port: 8081

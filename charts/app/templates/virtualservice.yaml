@@ -7,17 +7,24 @@ metadata:
   name: {{ include "app.name" . }}
 spec:
   hosts:
-  - {{ .Values.global.istio.gateway.host }}
+    - {{ .Values.global.istio.gateway.host }}
   gateways:
-  - {{ .Values.global.istio.gateway.name }}
+    - {{ .Values.global.istio.gateway.name }}
   http:
-  - route:
-    - destination:
-        host: {{ include "app.name" . }}
-        port:
-          number: {{ .Values.global.service.port }}
-    retries:
-      attempts: 2
-      perTryTimeout: 3s
-      retryOn: 5xx
+    {{- $host := include "app.name" . }}
+    {{- range .Values.global.service.ports }}
+    - route:
+        - destination:
+            host: {{ $host }}
+            port:
+              number: {{ .port }}
+      {{- with .routing.match }}
+      match:
+        {{- toYaml .| nindent 8 }}
+      {{- end }}
+      {{- with .routing.retries }}
+      retries:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- end }}
 {{- end }}

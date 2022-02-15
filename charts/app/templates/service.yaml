@@ -7,7 +7,9 @@ metadata:
 spec:
   type: {{ .Values.global.service.type }}
   ports:
-    - port: {{ .Values.global.service.port }}
-      name: http
+    {{- range .Values.global.service.ports }}
+    - port: {{ .port }}
+      name: {{ .name }}
+    {{- end }}
   selector:
     {{- include "app.selectorLabels" . | nindent 4 }}

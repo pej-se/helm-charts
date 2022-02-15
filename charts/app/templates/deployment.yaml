@@ -57,7 +57,10 @@ spec:
                   key: {{ $v | quote }}
           {{- end }}
           ports:
-            - containerPort: {{ .Values.global.service.port }}
+            {{- range $name, $port := .Values.global.service.ports }}
+            - containerPort: {{ $port }}
+              name: {{ $name }}
+            {{- end }}
           livenessProbe:
             initialDelaySeconds: {{ .Values.global.healthProbe.initialDelaySeconds }}
             httpGet:

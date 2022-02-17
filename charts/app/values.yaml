@@ -54,7 +54,10 @@ global:
           # match is optional, if it is ommitted then all requests will be matched
           match:
             - uri:
-                prefix: "pej."
+                prefix: "/pej."
+            - uri:
+                prefix: "/grpc."
+          # retries is optional
           retries:
             attempts: 3
             perTryTimeout: 2s

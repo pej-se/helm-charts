@@ -49,7 +49,8 @@ global:
     ports:
       - port: 9090
         name: grpc
-        # routing is only used when gateway enabled
+        # routing is optional and only used when istio gateway is enabled
+        # ACHTUNG: if port has no routing configuration then it will be exposed only internally
         routing:
           # match is optional, if it is ommitted then all requests will be matched
           match:

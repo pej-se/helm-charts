@@ -86,6 +86,9 @@ global:
       host: changeme.dev.pej.se
       credentialName: changeme-cert
       clusterIssuer: letsencrypt-prod
+      auth:
+        enabled: false
+        provider: ext-authz
 
   prometheus:
     enabled: true

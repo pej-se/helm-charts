@@ -72,6 +72,14 @@ global:
 #            attempts: 3
 #            perTryTimeout: 2s
 #            retryOn: 5xx
+#        corsPolicy:
+#          allowOrigins:
+#            - exact: https://something.dev.pej.se
+#          allowMethods:
+#            - "*"
+#          allowHeaders:
+#            - "*"
+#          maxAge: "24h"
 
   healthProbe:
     port: 8080

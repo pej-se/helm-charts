@@ -49,12 +49,14 @@ spec:
             - name: {{ $k | quote }}
               value: {{ $v | quote }}
           {{- end }}
-          {{- range $k, $v := .Values.global.secrets.keys }}
+          {{- range $secretName, $keys := .Values.global.secrets }}
+            {{- range $k, $v := $keys }}
             - name: {{ $k | quote }}
               valueFrom:
                 secretKeyRef:
-                  name: {{ $.Values.global.secrets.ref }}
+                  name: {{ $secretName | quote }}
                   key: {{ $v | quote }}
+            {{- end }}    
           {{- end }}
           ports:
             {{- range .Values.global.service.ports }}

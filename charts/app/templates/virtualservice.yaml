@@ -23,6 +23,10 @@ spec:
       match:
         {{- toYaml .| nindent 8 }}
       {{- end }}
+      {{- with ((.routing).rewrite) }}
+      rewrite:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with ((.routing).retries) }}
       retries:
         {{- toYaml . | nindent 8 }}

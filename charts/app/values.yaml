@@ -23,6 +23,12 @@ global:
 
   secrets: {}
 
+  configMaps: {}
+
+  volumeMounts: {}
+
+  volumes: {}
+
   imagePullSecrets:
     - name: image-pull-secrets
 
@@ -64,22 +70,22 @@ global:
             attempts: 3
             perTryTimeout: 2s
             retryOn: cancelled,deadline-exceeded,internal,unavailable
-# example http config:
-#      - port: 8080
-#        name: http
-#        routing:
-#          retries:
-#            attempts: 3
-#            perTryTimeout: 2s
-#            retryOn: 5xx
-#        corsPolicy:
-#          allowOrigins:
-#            - exact: https://something.dev.pej.se
-#          allowMethods:
-#            - "*"
-#          allowHeaders:
-#            - "*"
-#          maxAge: "24h"
+  # example http config:
+  #      - port: 8080
+  #        name: http
+  #        routing:
+  #          retries:
+  #            attempts: 3
+  #            perTryTimeout: 2s
+  #            retryOn: 5xx
+  #        corsPolicy:
+  #          allowOrigins:
+  #            - exact: https://something.dev.pej.se
+  #          allowMethods:
+  #            - "*"
+  #          allowHeaders:
+  #            - "*"
+  #          maxAge: "24h"
 
   healthProbe:
     port: 8080

@@ -10,6 +10,9 @@ spec:
     {{- range .Values.global.service.ports }}
     - port: {{ .port }}
       name: {{ .name }}
+      {{- if .targetPort}}
+      targetPort: {{.targetPort}}
+      {{- end}}
     {{- end }}
   selector:
     {{- include "app.selectorLabels" . | nindent 4 }}

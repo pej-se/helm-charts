@@ -75,6 +75,11 @@ spec:
               port: {{ .Values.global.healthProbe.port }}
           resources:
             {{- toYaml .Values.global.resources | nindent 12 }}
+          volumeMounts:
+            {{- range $volumeMountName, $keys := .Values.global.volumeMounts }}
+            - name: {{$volumeMountName}}
+              mountPath: {{$keys.mountPath}}
+            {{- end }}
         {{- if .Values.global.cloudSqlProxy.enabled }}
         - name: cloud-sql-proxy
           image: "gcr.io/cloudsql-docker/gce-proxy:{{ .Values.global.cloudSqlProxy.tag }}"
@@ -89,6 +94,12 @@ spec:
         {{- end }}
         {{- with .Values.global.extraContainers }}
           {{- toYaml . | nindent 8 }}
+        {{- end }}
+      volumes:
+        {{- range $volumeName, $keys := $.Values.global.volumes }}
+        - name: {{$volumeName}}
+          configMap:
+            name:  {{$keys.configMapName}}
         {{- end }}
       affinity:
         podAntiAffinity:

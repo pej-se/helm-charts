@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   app:
   - apiVersion: v2
+    created: "2024-01-16T14:33:38.801311978Z"
+    description: Generic app chart
+    digest: 9f568bc1554e6d1a2a703acd407e6736a7326f4cec17c3b778a25b7623c9771f
+    name: app
+    type: application
+    urls:
+    - https://github.com/pej-se/helm-charts/releases/download/app-0.9.0/app-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
     created: "2023-01-13T15:30:04.867708726Z"
     description: Generic app chart
     digest: 64c91d4b20a17ccb6bf43f382aa817bb03839fd3e209e07772f4a35269c7a423
@@ -82,4 +91,4 @@ entries:
     urls:
     - https://github.com/pej-se/helm-charts/releases/download/app-0.1.0/app-0.1.0.tgz
     version: 0.1.0
-generated: "2023-01-13T15:30:04.867747126Z"
+generated: "2024-01-16T14:33:38.801360809Z"

@@ -98,8 +98,14 @@ spec:
       volumes:
         {{- range $volumeName, $keys := $.Values.global.volumes }}
         - name: {{$volumeName}}
+        {{- if $keys.configMapName }}
           configMap:
             name:  {{$keys.configMapName}}
+        {{- end }}
+        {{- if $keys.secretName }}
+          secret:
+            secretName: {{$keys.secretName}} 
+        {{- end }}
         {{- end }}
       affinity:
         podAntiAffinity:

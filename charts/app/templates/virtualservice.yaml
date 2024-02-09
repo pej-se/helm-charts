@@ -35,6 +35,10 @@ spec:
       corsPolicy:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{-  with ((.routing).headers) }}
+      headers:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     {{- end }}
     {{- end }}
 {{- end }}

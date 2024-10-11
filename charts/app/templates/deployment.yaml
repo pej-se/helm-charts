@@ -16,6 +16,7 @@ spec:
   template:
     metadata:
       annotations:
+        {{- include "app.pejAnnotations" . | nindent 8 }}
         {{- if .Values.global.prometheus.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/path: "{{ .Values.global.prometheus.path }}"
@@ -82,11 +83,11 @@ spec:
             {{- end }}
         {{- if .Values.global.cloudSqlProxy.enabled }}
         - name: cloud-sql-proxy
-          image: "gcr.io/cloudsql-docker/gce-proxy:{{ .Values.global.cloudSqlProxy.tag }}"
+          image: "gcr.io/cloud-sql-connectors/cloud-sql-proxy:{{ .Values.global.cloudSqlProxy.tag }}"
           command:
-            - "/cloud_sql_proxy"
-            - "-ip_address_types=PRIVATE"
-            - "-instances={{ .Values.global.cloudSqlProxy.instances }}"
+            - "--private-ip"
+            - "--port=5432"
+            - "{{ .Values.global.cloudSqlProxy.instance }}"
           securityContext:
             runAsNonRoot: true
           resources:

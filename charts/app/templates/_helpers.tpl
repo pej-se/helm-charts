@@ -30,6 +30,14 @@ app.kubernetes.io/name: {{ include "app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{- define "app.pejAnnotations" -}}
+pej.se/environment: {{ .Values.global.app.environment }}
+pej.se/project: {{ .Values.global.app.project }}
+pej.se/customer: {{ .Values.global.app.customer }}
+pej.se/release: {{ .Values.global.app.release }}
+pej.se/version: {{ .Values.global.app.version }}
+{{- end }}
+
 {{- define "app.serviceAccountName" -}}
 {{- default "default" .Values.global.serviceAccount.name }}
 {{- end }}

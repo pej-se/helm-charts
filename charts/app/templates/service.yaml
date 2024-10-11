@@ -2,6 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "app.fullname" . }}
+  annotations:
+    {{- include "app.pejAnnotations" . | nindent 4 }}
   labels:
     {{- include "app.labels" . | nindent 4 }}
 spec:

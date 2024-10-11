@@ -1,5 +1,7 @@
 name: Sync README.md
 
+permissions: write-all
+
 on:
   push:
     branches:

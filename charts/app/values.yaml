@@ -2,6 +2,13 @@ global:
   nameOverride: ""
   fullnameOverride: ""
 
+  app:
+    release: "not set"
+    version: "not set"
+    project: "not set"
+    customer: "pej"
+    environment: "dev"
+
   replicaCount: 2
 
   image:
@@ -11,7 +18,7 @@ global:
 
   resources:
     requests:
-      cpu: 10m
+      cpu: 100m
       memory: 512Mi
     limits:
       cpu: 500m
@@ -29,8 +36,7 @@ global:
 
   volumes: {}
 
-  imagePullSecrets:
-    - name: image-pull-secrets
+  imagePullSecrets: {}
 
   serviceAccount:
     name: ""
@@ -54,44 +60,28 @@ global:
   service:
     type: ClusterIP
     ports:
-      - port: 9090
-        name: grpc
+      - port: 8080
+        name: http
         # routing is optional and only used when istio gateway is enabled
         # ACHTUNG: if port has no routing configuration then it will be exposed only internally
         routing:
-          # match is optional, if it is ommitted then all requests will be matched
-          match:
-            - uri:
-                prefix: "/pej."
-            - uri:
-                prefix: "/grpc."
           # retries is optional
           retries:
             attempts: 3
             perTryTimeout: 2s
-            retryOn: cancelled,deadline-exceeded,internal,unavailable
-  # example http config:
-  #      - port: 8080
-  #        name: http
-  #        routing:
-  #          retries:
-  #            attempts: 3
-  #            perTryTimeout: 2s
-  #            retryOn: 5xx
-  #        corsPolicy:
-  #          allowOrigins:
-  #            - exact: https://something.dev.pej.se
-  #          allowMethods:
-  #            - "*"
-  #          allowHeaders:
-  #            - "*"
-  #          maxAge: "24h"
+            retryOn: 5xx
+        # corsPolicy:
+        #  allowMethods:
+        #    - "*"
+        #  allowHeaders:
+        #    - "*"
+        #  maxAge: "24h"
 
   healthProbe:
     port: 8080
     initialDelaySeconds: 15
-    liveness: /actuator/health/liveness
-    readiness: /actuator/health/readiness
+    liveness: /health/liveness
+    readiness: /health/readiness
 
   istio:
     gateway:
@@ -107,18 +97,18 @@ global:
   prometheus:
     enabled: true
     port: 8080
-    path: /actuator/prometheus
+    path: /metrics
 
   cloudSqlProxy:
     enabled: false
-    instances: <project>:<location>:<db>=tcp:<port>
-    tag: 1.28.0
+    instance: <project>:<location>:<db>
+    tag: 2.13.0
     resources:
       requests:
         memory: 128Mi
         cpu: 10m
       limits:
         memory: 256Mi
-        cpu: 150m
+        cpu: 250m
 
   extraContainers: {}

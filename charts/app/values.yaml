@@ -3,10 +3,10 @@ global:
   fullnameOverride: ""
 
   app:
-    release: "not set"
-    version: "not set"
-    project: "not set"
-    customer: "pej"
+    release: "not_set"
+    version: "not_set"
+    project: "not_set"
+    customer: "shared"
     environment: "dev"
 
   replicaCount: 2

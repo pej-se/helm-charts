@@ -4,8 +4,8 @@ kind: Certificate
 metadata:
   name: {{ .Values.global.istio.gateway.credentialName }}
   namespace: istio-system
-  annotations:
-    {{- include "app.pejAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "app.pejLabels" . | nindent 4 }}
 spec:
   dnsNames:
     - {{ .Values.global.istio.gateway.host }}

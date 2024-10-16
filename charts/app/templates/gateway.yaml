@@ -2,10 +2,9 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  annotations:
-    {{- include "app.pejAnnotations" . | nindent 4 }}
   labels:
     {{- include "app.labels" . | nindent 4 }}
+    {{- include "app.pejLabels" . | nindent 4 }}
   name: {{ .Values.global.istio.gateway.name }}
 spec:
   selector:

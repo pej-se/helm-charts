@@ -3,8 +3,8 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: {{ include "app.fullname" . }}
-  annotations:
-    {{- include "app.pejAnnotations" . | nindent 4 }}
+  labels:
+    {{- include "app.pejLabels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:

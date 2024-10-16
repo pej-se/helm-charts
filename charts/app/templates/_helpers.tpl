@@ -30,7 +30,7 @@ app.kubernetes.io/name: {{ include "app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "app.pejAnnotations" -}}
+{{- define "app.pejLabels" -}}
 pej.se/environment: {{ .Values.global.app.environment | quote }}
 pej.se/project: {{ .Values.global.app.project | quote }}
 pej.se/customer: {{ .Values.global.app.customer | quote }}

@@ -2,10 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "app.fullname" . }}
-  annotations:
-    {{- include "app.pejAnnotations" . | nindent 4 }}
   labels:
     {{- include "app.labels" . | nindent 4 }}
+    {{- include "app.pejLabels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.global.replicaCount }}
   selector:
@@ -18,7 +17,6 @@ spec:
   template:
     metadata:
       annotations:
-        {{- include "app.pejAnnotations" . | nindent 8 }}
         {{- if .Values.global.prometheus.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/path: "{{ .Values.global.prometheus.path }}"
@@ -29,6 +27,7 @@ spec:
         {{- end }}
       labels:
         {{- include "app.selectorLabels" . | nindent 8 }}
+        {{- include "app.pejLabels" . | nindent 8 }}
     spec:
       {{- with .Values.global.imagePullSecrets }}
       imagePullSecrets:

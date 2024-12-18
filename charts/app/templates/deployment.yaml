@@ -58,7 +58,7 @@ spec:
                 secretKeyRef:
                   name: {{ $secretName | quote }}
                   key: {{ $v | quote }}
-            {{- end }}    
+            {{- end }}
           {{- end }}
           ports:
             {{- range .Values.global.service.ports }}
@@ -104,10 +104,11 @@ spec:
         {{- if $keys.configMapName }}
           configMap:
             name:  {{$keys.configMapName}}
-        {{- end }}
-        {{- if $keys.secretName }}
+        {{- else if $keys.secretName }}
           secret:
-            secretName: {{$keys.secretName}} 
+            secretName: {{$keys.secretName}}
+        {{- else if $keys.emptyDir }}
+          emptyDir: {{$keys.emptyDir}}
         {{- end }}
         {{- end }}
       affinity:

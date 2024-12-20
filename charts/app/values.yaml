@@ -26,7 +26,7 @@ global:
       ephemeral-storage: 1Gi
 
   env:
-    JAVA_TOOL_OPTIONS: -XX:+PrintCommandLineFlags -XX:InitialRAMPercentage=80 -XX:MaxRAMPercentage=80
+    JAVA_TOOL_OPTIONS: -XX:+PrintCommandLineFlags -XX:MaxRAMPercentage=60
 
   secrets: {}
 

@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  release:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,16 +17,54 @@ jobs:
       - run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - uses: azure/setup-helm@v1
+      - uses: azure/setup-helm@v4
         with:
           version: v3.16.4
+  release:
+    runs-on: ubuntu-latest
+    needs: [setup]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: helm/chart-releaser-action@v1.2.1
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - uses: bsord/helm-push@4.1.0
+  find-charts:
+    name: Find Charts
+    needs: [setup]
+    runs-on: ubuntu-latest
+    outputs:
+      folders: ${{ steps.folders.outputs.folders }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - id: folders
+        shell: bash
+        run: |
+          cd charts
+          folders=$(tree -J -d -L 1 | jq -c '.[0].contents | map(.name)')
+          echo $folders
+          echo "folders=$folders" >> $GITHUB_OUTPUT
+  push:
+    name: Push ${{ matrix.folder }} chart
+    needs: [find-charts]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.folder }}
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.find-charts.outputs.folders )}}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: bsord/helm-push@v4.1.0
         with:
           useOCIRegistry: true
           registry-url: ${{ secrets.OCI_URL }}
           username: ${{ secrets.OCI_USERNAME }}
           access-token: ${{ secrets.OCI_TOKEN }}
-          chart-folder: charts
+          chart-folder: charts/${{matrix.folder}}
